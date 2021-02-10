@@ -8,6 +8,7 @@ export default function LoginForm(props) {
     // <div className="login">
 
     <div className="box">
+      <h1>LOGIN</h1>
       <input
         type="text"
         placeholder="Enter username"
