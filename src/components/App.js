@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import Dashboard from "./Dashboard";
 import LoginForm from "./LoginForm";
 import "./../styles/App.css";
-import { BrowserRouter } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
+// import Dashboard from "./Dashboard";
+import Contact from "./Contact";
+import About from "./About";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -79,14 +82,26 @@ function App() {
         }
       });
   };
-  return loggedIn ? (
-    <Dashboard username={userName} logoutHandler={logoutHandler} />
-  ) : (
-    <LoginForm
-      signupHandler={signupHandler}
-      loginHandler={loginHandler}
-      error={error}
-    />
+  return (
+    <>
+      {loggedIn ? (
+        <>
+          <Dashboard username={userName} logoutHandler={logoutHandler} />
+        </>
+      ) : (
+        <LoginForm
+          signupHandler={signupHandler}
+          loginHandler={loginHandler}
+          error={error}
+        />
+      )}
+      {/* <Switch>
+        <Route exact path="/login" component={LoginForm} />
+        <Route exact path="/about" component={About} />
+        <Route exact path="/contact" component={Contact} />
+        <Route exact path="/dashboard" component={Dashboard} />
+      </Switch> */}
+    </>
   );
 }
 

@@ -5,7 +5,9 @@ export default function LoginForm(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   return (
-    <div className="login">
+    // <div className="login">
+
+    <div className="box">
       <input
         type="text"
         placeholder="Enter username"
