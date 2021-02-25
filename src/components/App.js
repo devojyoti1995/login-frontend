@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Dashboard from "./Dashboard";
+import TodoList from "./TodoList.js";
 import LoginForm from "./LoginForm";
 import "./../styles/App.css";
-import { Route, Switch } from "react-router-dom";
-// import Dashboard from "./Dashboard";
-import Contact from "./Contact";
-import About from "./About";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -15,7 +11,6 @@ function App() {
   const getUserName = () => {
     return fetch("http://localhost:9999/userinfo", { credentials: "include" })
       .then((r) => {
-        console.log("inside userinfo", r);
         if (r.ok) {
           return r.json();
         } else {
@@ -25,7 +20,6 @@ function App() {
         }
       })
       .then((r) => {
-        console.log(r);
         if (r.success !== false) {
           setLoggedIn(true);
           setUserName(r.userName);
@@ -33,9 +27,9 @@ function App() {
       });
   };
 
-  // useEffect(() => {
-  //   getUserName();
-  // }, []);
+  useEffect(() => {
+    getUserName();
+  }, []);
 
   const signupHandler = (username, password) => {
     loginOrSignup("http://localhost:9999/signup", username, password);
@@ -65,7 +59,6 @@ function App() {
       credentials: "include",
     })
       .then((r) => {
-        console.log(r);
         if (r.ok) {
           return { success: true };
         } else {
@@ -73,36 +66,121 @@ function App() {
         }
       })
       .then((r) => {
-        console.log(r);
         if (r.success === true) {
-          setError(undefined);
           return getUserName();
         } else {
           setError(r.err);
         }
       });
   };
-  return (
-    <>
-      {loggedIn ? (
-        <>
-          <Dashboard username={userName} logoutHandler={logoutHandler} />
-        </>
-      ) : (
-        <LoginForm
-          signupHandler={signupHandler}
-          loginHandler={loginHandler}
-          error={error}
-        />
-      )}
-      {/* <Switch>
-        <Route exact path="/login" component={LoginForm} />
-        <Route exact path="/about" component={About} />
-        <Route exact path="/contact" component={Contact} />
-        <Route exact path="/dashboard" component={Dashboard} />
-      </Switch> */}
-    </>
+  return loggedIn ? (
+    <TodoList username={userName} logoutHandler={logoutHandler} />
+  ) : (
+    <LoginForm
+      signupHandler={signupHandler}
+      loginHandler={loginHandler}
+      error={error}
+    />
   );
 }
 
 export default App;
+
+// import React, { useState, useEffect } from "react";
+// import Dashboard from "./Dashboard";
+// import LoginForm from "./LoginForm";
+// import "./../styles/App.css";
+
+// function App() {
+//   const [loggedIn, setLoggedIn] = useState(false);
+//   const [error, setError] = useState(undefined);
+//   const [userName, setUserName] = useState(undefined);
+
+//   const getUserName = () => {
+//     return fetch("http://localhost:9999/userinfo", { credentials: "include" })
+//       .then((r) => {
+//         console.log("inside userinfo", r);
+//         if (r.ok) {
+//           return r.json();
+//         } else {
+//           setLoggedIn(false);
+//           setUserName(undefined);
+//           return { success: false };
+//         }
+//       })
+//       .then((r) => {
+//         console.log(r);
+//         if (r.success !== false) {
+//           setLoggedIn(true);
+//           setUserName(r.userName);
+//         }
+//       });
+//   };
+
+//   useEffect(() => {
+//     getUserName();
+//   }, []);
+
+//   const signupHandler = (username, password) => {
+//     loginOrSignup("http://localhost:9999/signup", username, password);
+//   };
+//   const loginHandler = (username, password) => {
+//     loginOrSignup("http://localhost:9999/login", username, password);
+//   };
+
+//   const logoutHandler = () => {
+//     return fetch("http://localhost:9999/logout", {
+//       credentials: "include",
+//     }).then((r) => {
+//       if (r.ok) {
+//         setLoggedIn(false);
+//         setUserName(undefined);
+//       }
+//     });
+//   };
+
+//   const loginOrSignup = (url, username, password) => {
+//     fetch(url, {
+//       method: "POST",
+//       body: JSON.stringify({ userName: username, password }),
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       credentials: "include",
+//     })
+//       .then((r) => {
+//         console.log(r);
+//         if (r.ok) {
+//           return { success: true };
+//         } else {
+//           return r.json();
+//         }
+//       })
+//       .then((r) => {
+//         console.log(r);
+//         if (r.success === true) {
+//           setError(undefined);
+//           return getUserName();
+//         } else {
+//           setError(r.err);
+//         }
+//       });
+//   };
+//   return (
+//     <>
+//       {loggedIn ? (
+//         <>
+//           <Dashboard username={userName} logoutHandler={logoutHandler} />
+//         </>
+//       ) : (
+//         <LoginForm
+//           signupHandler={signupHandler}
+//           loginHandler={loginHandler}
+//           error={error}
+//         />
+//       )}
+//     </>
+//   );
+// }
+
+// export default App;
